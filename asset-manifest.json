@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.f3d73c21.css",
-    "main.js": "/static/js/main.00a72202.js",
+    "main.css": "/static/css/main.ce2ea1db.css",
+    "main.js": "/static/js/main.d0f37563.js",
     "static/js/453.ad7768ec.chunk.js": "/static/js/453.ad7768ec.chunk.js",
     "static/media/profmail.png": "/static/media/profmail.c5b58052300dc52820a1.png",
     "static/media/vae-clustering.jpg": "/static/media/vae-clustering.5a2000fe9696ae262275.jpg",
@@ -15,12 +15,12 @@
     "static/media/Tahsin_Tanni_CV_Professional.pdf": "/static/media/Tahsin_Tanni_CV_Professional.8b55afa8107834b6f6df.pdf",
     "static/media/rag-slackbot.jpg": "/static/media/rag-slackbot.e9d1b07229e387857a47.jpg",
     "index.html": "/index.html",
-    "main.f3d73c21.css.map": "/static/css/main.f3d73c21.css.map",
-    "main.00a72202.js.map": "/static/js/main.00a72202.js.map",
+    "main.ce2ea1db.css.map": "/static/css/main.ce2ea1db.css.map",
+    "main.d0f37563.js.map": "/static/js/main.d0f37563.js.map",
     "453.ad7768ec.chunk.js.map": "/static/js/453.ad7768ec.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f3d73c21.css",
-    "static/js/main.00a72202.js"
+    "static/css/main.ce2ea1db.css",
+    "static/js/main.d0f37563.js"
   ]
 }
