@@ -78,13 +78,21 @@ function Navbar({ theme, setTheme, scrollToSection }) {
           </li>
         ))}
       </ul>
-      <button
-        className="theme-toggle"
-        aria-label="Toggle theme"
-        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      >
-        {theme === 'light' ? '🌙' : '☀️'}
-      </button>
+      <div className="theme-switch-wrapper">
+        <label className="theme-switch" aria-label="Toggle theme">
+          <input
+            type="checkbox"
+            checked={theme === 'light'}
+            onChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          />
+          <div className="back">
+            <div className="but">
+              <div className="on">I</div>
+              <div className="off">O</div>
+            </div>
+          </div>
+        </label>
+      </div>
       <button
         className="hamburger"
         aria-label="Open menu"
