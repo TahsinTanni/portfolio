@@ -17,6 +17,8 @@
 .horizontal-carousel-wrapper {
   position: relative;
   display: block;
+  overflow: visible !important;
+  padding: 0 28px !important; /* room for the absolute-positioned chevron buttons */
 }
 
 /* Floating Scroll buttons positioned at the edges */
@@ -41,11 +43,11 @@
 }
 
 .horizontal-scroll-btn-left {
-  left: -20px !important;
+  left: 0 !important;
 }
 
 .horizontal-scroll-btn {
-  right: -20px !important;
+  right: 0 !important;
 }
 
 .horizontal-scroll-btn:hover:not(:disabled),
@@ -62,28 +64,29 @@
   cursor: not-allowed !important;
 }
 
-/* Flex Row Carousel */
+/* Flex Row Carousel -> Card Stack */
 .horizontal-carousel {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 20px !important;
-  overflow-x: auto !important;
-  scroll-behavior: smooth !important;
-  padding: 8px 0 16px 0 !important;
-  margin: 0 !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 320px !important; /* Fixed height for the card stack */
+  margin: 80px auto 0 auto !important; /* Space for stacked offset cards to prevent header overlap */
+  display: block !important;
+  overflow: visible !important;
   list-style: none !important;
-  scrollbar-width: none !important; /* Firefox */
+  padding: 0 !important;
 }
 
 .horizontal-carousel::-webkit-scrollbar {
-  display: none !important; /* Safari and Chrome */
+  display: none !important;
 }
 
-/* Horizontal Rectangle Card (Shows one-by-one on Desktop) */
+/* Horizontal Rectangle Card (Stacked Layout) */
 .horizontal-carousel-card {
-  flex: 0 0 100% !important;
-  max-width: 100% !important;
-  min-width: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
   display: flex !important;
   flex-direction: row !important; /* side-by-side banner/info */
   gap: 24px !important;
@@ -92,16 +95,15 @@
   border-radius: 12px !important;
   border: 1px solid var(--border) !important;
   padding: 24px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
   transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
   cursor: default !important;
   box-sizing: border-box !important;
-  position: relative !important;
 }
 
 .horizontal-carousel-card:hover {
   border-color: var(--acc) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Banner area styled as wide visual block on the left */
@@ -280,37 +282,8 @@
   padding-top: 8px !important;
 }
 
-/* External Link / Live Button */
-.live-btn {
-  background: transparent !important;
-  color: var(--text) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 6px !important;
-  padding: 6px 12px !important;
-  font-size: 11px !important;
-  font-weight: 500 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 4px !important;
-  cursor: pointer !important;
-  transition: background 0.2s, color 0.2s !important;
-  box-shadow: none !important;
-  text-decoration: none !important;
-}
-
-.live-btn:hover {
-  background: var(--acc) !important;
-  color: var(--acc-text) !important;
-  border-color: transparent !important;
-}
-
-.live-icon {
-  font-size: 12px !important;
-  color: inherit !important;
-}
-
-/* GitHub Button style as circular button */
+/* External Link / Live Button & GitHub Button (Styled Identically) */
+.live-btn,
 .github-btn {
   background: var(--tag-bg) !important;
   border: 1px solid var(--border) !important;
@@ -323,20 +296,27 @@
   padding: 0 !important;
   box-shadow: none !important;
   cursor: pointer !important;
-  transition: background 0.2s, border-color 0.2s !important;
+  transition: background 0.2s, border-color 0.2s, color 0.2s !important;
+  text-decoration: none !important;
+  color: var(--text) !important;
 }
 
+.live-btn:hover,
 .github-btn:hover {
   background: var(--acc) !important;
   border-color: transparent !important;
+  color: var(--acc-text) !important;
 }
 
+.live-icon,
 .github-icon {
-  font-size: 16px !important;
+  font-size: 18px !important;
   color: var(--text) !important;
   transition: color 0.2s !important;
+  display: block !important;
 }
 
+.live-btn:hover .live-icon,
 .github-btn:hover .github-icon {
   color: var(--acc-text) !important;
 }
@@ -369,25 +349,36 @@
 
 /* Mobile Responsiveness Rules */
 @media (max-width: 768px) {
+  .horizontal-carousel {
+    height: 530px !important;
+    margin: 85px auto 0 auto !important; /* Space to prevent mobile header overlap */
+  }
+
   .horizontal-carousel-card {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 100% !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 16px !important;
+    gap: 12px !important;
     padding: 16px !important;
-    flex: 0 0 92% !important; /* Swipe scrolling hint */
-    max-width: 92% !important;
-    min-width: 92% !important;
   }
   
   .project-img-wrap {
     width: 100% !important;
-    height: 180px !important;
+    height: 140px !important;
   }
 
   .see-more-card {
-    flex: 0 0 92% !important;
-    max-width: 92% !important;
-    min-width: 92% !important;
+    position: absolute !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 100% !important;
   }
 
   .horizontal-scroll-btn,

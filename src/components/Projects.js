@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Projects.css';
 import ragSlackbotImg from '../assets/rag-slackbot.jpg';
@@ -84,44 +84,22 @@ const projects = [
   
 ];
 
-function Projects() {
-  const carouselRef = useRef(null);
-  const [scrollIndex, setScrollIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const isProgrammaticScroll = useRef(false);
+const initialCards = [
+  ...projects.map((proj, idx) => ({ ...proj, id: `proj-${idx}` })),
+  { id: 'see-more', isSeeMore: true, title: "See More", code: "https://github.com/TahsinTanni?tab=repositories" }
+];
 
-  const cardsPerView = 1;
-  const totalCards = projects.length + 1; // +1 for See More card
-  const maxIndex = Math.ceil(totalCards / cardsPerView) - 1;
+function Projects() {
+  const [cards, setCards] = useState(initialCards);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleScrollRight = () => {
-    isProgrammaticScroll.current = true;
-    setScrollIndex((prev) => (prev + 1 > maxIndex ? 0 : prev + 1));
+    setCards(prev => [...prev.slice(1), prev[0]]);
   };
 
   const handleScrollLeft = () => {
-    isProgrammaticScroll.current = true;
-    setScrollIndex((prev) => (prev - 1 < 0 ? maxIndex : prev - 1));
+    setCards(prev => [prev[prev.length - 1], ...prev.slice(0, prev.length - 1)]);
   };
-
-  // Scroll to active card when scrollIndex changes programmatically
-  useEffect(() => {
-    if (isProgrammaticScroll.current) {
-      if (carouselRef.current && carouselRef.current.children[scrollIndex]) {
-        const targetLeft = carouselRef.current.children[scrollIndex].offsetLeft;
-        carouselRef.current.scrollTo({
-          left: targetLeft,
-          behavior: 'smooth'
-        });
-        
-        // Reset the programmatic scroll flag after the transition finishes (600ms)
-        const timer = setTimeout(() => {
-          isProgrammaticScroll.current = false;
-        }, 600);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [scrollIndex]);
 
   // Auto-scroll loop effect (every 3 seconds, pauses on hover)
   useEffect(() => {
@@ -130,32 +108,12 @@ function Projects() {
       handleScrollRight();
     }, 3000); // 3 seconds per project
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrollIndex, isHovered, maxIndex]);
+  }, [isHovered]);
 
-  // Sync scrollIndex when user manually scrolls (swiping / dragging)
-  const handleScroll = () => {
-    if (isProgrammaticScroll.current) return;
-    if (carouselRef.current) {
-      const scrollLeft = carouselRef.current.scrollLeft;
-      const children = Array.from(carouselRef.current.children);
-      
-      let closestIndex = 0;
-      let minDistance = Infinity;
-      
-      children.forEach((child, index) => {
-        const distance = Math.abs(child.offsetLeft - scrollLeft);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestIndex = index;
-        }
-      });
-      
-      if (closestIndex !== scrollIndex && closestIndex >= 0 && closestIndex <= maxIndex) {
-        setScrollIndex(closestIndex);
-      }
-    }
-  };
+  const cardShift = 20;    // Stack vertical shift in pixels
+  const scaleStep = 0.04;  // Scale step for layering
+  const dimStep = 0.15;    // Dimming factor per layered card
+  const spring = { type: "spring", stiffness: 170, damping: 26 };
 
   return (
     <section id="projects" className="projects-section">
@@ -172,68 +130,127 @@ function Projects() {
         >
           <FiChevronLeft size={32} />
         </button>
-        <div 
-          className="horizontal-carousel" 
-          ref={carouselRef}
-          onScroll={handleScroll}
-        >
-          {projects.map((proj, i) => (
-            <motion.div
-              key={proj.title}
-              className="horizontal-carousel-card"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <div className="project-img-wrap">
-                {proj.image && (
-                  <img src={proj.image} alt={proj.title} className="project-img" />
-                )}
-              </div>
-              <div className="project-info">
-                <h3 className="project-title">{proj.title}</h3>
-                <p className="project-desc">{proj.description}</p>
-                <div className="project-tech">
-                  {proj.tech.map(tag => (
-                    <span className="tech-tag" key={tag}>{tag}</span>
-                  ))}
-                </div>
-                <div className="project-btns">
-                  {proj.live && (
-                    <a
-                      href={proj.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-btn live-btn"
-                    >
-                      <FiExternalLink className="live-icon" />
-                    </a>
+        <div className="horizontal-carousel card-stack">
+          {cards.map((proj, i) => {
+            const front = i === 0;
+            const styleIndex = Math.min(i, 3);
+            const brightness = Math.max(0.1, 1 - styleIndex * dimStep);
+            const baseZ = cards.length - i;
+
+            if (proj.isSeeMore) {
+              return (
+                <motion.a
+                  key={proj.id}
+                  href={proj.code}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="horizontal-carousel-card see-more-card"
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    zIndex: baseZ,
+                    cursor: front ? "pointer" : "default",
+                    touchAction: "none"
+                  }}
+                  animate={{
+                    y: styleIndex * -cardShift,
+                    scale: 1 - styleIndex * scaleStep,
+                    filter: `brightness(${brightness})`,
+                    zIndex: baseZ
+                  }}
+                  transition={spring}
+                  drag={front ? "y" : false}
+                  dragConstraints={{ top: 0, bottom: 0 }}
+                  dragMomentum={false}
+                  onDragEnd={handleScrollRight}
+                  whileDrag={front ? {
+                    zIndex: cards.length + 1,
+                    scale: 1 + 0.02,
+                    rotate: 2
+                  } : {}}
+                >
+                  <span className="see-more-text">See More</span>
+                  <FiExternalLink size={32} />
+                </motion.a>
+              );
+            }
+
+            return (
+              <motion.div
+                key={proj.id}
+                className="horizontal-carousel-card"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  zIndex: baseZ,
+                  cursor: front ? "grab" : "default",
+                  touchAction: "none"
+                }}
+                animate={{
+                  y: styleIndex * -cardShift,
+                  scale: 1 - styleIndex * scaleStep,
+                  filter: `brightness(${brightness})`,
+                  zIndex: baseZ
+                }}
+                transition={spring}
+                drag={front ? "y" : false}
+                dragConstraints={{ top: 0, bottom: 0 }}
+                dragMomentum={false}
+                onDragEnd={handleScrollRight}
+                whileDrag={front ? {
+                  zIndex: cards.length + 1,
+                  cursor: "grabbing",
+                  scale: 1 + 0.02,
+                  rotate: 2
+                } : {}}
+              >
+                <div className="project-img-wrap">
+                  {proj.image && (
+                    <img src={proj.image} alt={proj.title} className="project-img" />
                   )}
-                  {proj.code && (
-                    <a
-                      href={proj.code}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="project-btn github-btn"
-                    >
-                      <FaGithub className="github-icon" />
-                    </a>
-                  )}
                 </div>
-              </div>
-            </motion.div>
-          ))}
-          <motion.a
-            href="https://github.com/TahsinTanni?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="horizontal-carousel-card see-more-card"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <span className="see-more-text">See More</span>
-            <FiExternalLink size={32} />
-          </motion.a>
+                <div className="project-info">
+                  <h3 className="project-title">{proj.title}</h3>
+                  <p className="project-desc">{proj.description}</p>
+                  <div className="project-tech">
+                    {proj.tech.map(tag => (
+                      <span className="tech-tag" key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                  <div className="project-btns">
+                    {proj.live && (
+                      <a
+                        href={proj.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-btn live-btn"
+                        onClick={(e) => {
+                          if (!front) e.preventDefault();
+                        }}
+                      >
+                        <FiExternalLink size={18} className="live-icon" />
+                      </a>
+                    )}
+                    {proj.code && (
+                      <a
+                        href={proj.code}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-btn github-btn"
+                        onClick={(e) => {
+                          if (!front) e.preventDefault();
+                        }}
+                      >
+                        <FaGithub size={18} className="github-icon" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
         <button
           className="horizontal-scroll-btn"
