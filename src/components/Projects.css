@@ -350,7 +350,7 @@
 /* Mobile Responsiveness Rules */
 @media (max-width: 768px) {
   .horizontal-carousel {
-    height: 530px !important;
+    height: 560px !important;
     margin: 85px auto 0 auto !important; /* Space to prevent mobile header overlap */
   }
 
@@ -370,7 +370,26 @@
   
   .project-img-wrap {
     width: 100% !important;
-    height: 140px !important;
+    height: 120px !important;
+  }
+
+  .project-title {
+    margin-bottom: 6px !important;
+  }
+
+  .project-desc {
+    margin-bottom: 8px !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+  }
+
+  .project-tech {
+    margin-bottom: 8px !important;
+  }
+
+  .project-btns {
+    padding-top: 4px !important;
+    margin-top: auto !important;
   }
 
   .see-more-card {
