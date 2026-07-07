@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Projects.css';
+import ragSlackbotImg from '../assets/rag-slackbot.jpg';
 import thesisFlowImg from '../assets/thesis-flow.png';
 import stockForecastingImg from '../assets/stock-forecasting.jpg';
 import aiProfessorFinderImg from '../assets/ai-professor-finder.png';
@@ -13,6 +14,13 @@ import { FiExternalLink, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import { FaGithub } from 'react-icons/fa';
 
 const projects = [
+  {
+    title: "RAG-Slackbot",
+    image: ragSlackbotImg,
+    description: "RAG Slackbot – Knowledge Base Assistant\nA Slack-integrated RAG chatbot built with n8n that enables real-time querying of internal PDF knowledge bases. It performs automated document ingestion, vector search using Supabase, and generates context-aware responses with Gemini. Includes confidence-based escalation, source attribution, and query logging, with privacy-focused local embeddings via Ollama.",
+    tech: ["n8n", "Supabase", "Ollama", "Google Gemini"],
+    code: "https://github.com/TahsinTanni/RAG-slackbot"
+  },
   {
     title: "ThesisFlow - Thesis Management System",
     image: thesisFlowImg,
@@ -79,50 +87,96 @@ const projects = [
 function Projects() {
   const carouselRef = useRef(null);
   const [scrollIndex, setScrollIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const isProgrammaticScroll = useRef(false);
 
   const cardsPerView = 1;
   const totalCards = projects.length + 1; // +1 for See More card
   const maxIndex = Math.ceil(totalCards / cardsPerView) - 1;
 
   const handleScrollRight = () => {
-    let newIndex = scrollIndex + 1;
-    if (newIndex > maxIndex) newIndex = maxIndex;
-    setScrollIndex(newIndex);
-    if (carouselRef.current) {
-      const cardWidth = carouselRef.current.offsetWidth / cardsPerView;
-      carouselRef.current.scrollTo({
-        left: newIndex * cardWidth * cardsPerView,
-        behavior: 'smooth'
-      });
-    }
+    isProgrammaticScroll.current = true;
+    setScrollIndex((prev) => (prev + 1 > maxIndex ? 0 : prev + 1));
   };
 
   const handleScrollLeft = () => {
-    let newIndex = scrollIndex - 1;
-    if (newIndex < 0) newIndex = 0;
-    setScrollIndex(newIndex);
+    isProgrammaticScroll.current = true;
+    setScrollIndex((prev) => (prev - 1 < 0 ? maxIndex : prev - 1));
+  };
+
+  // Scroll to active card when scrollIndex changes programmatically
+  useEffect(() => {
+    if (isProgrammaticScroll.current) {
+      if (carouselRef.current && carouselRef.current.children[scrollIndex]) {
+        const targetLeft = carouselRef.current.children[scrollIndex].offsetLeft;
+        carouselRef.current.scrollTo({
+          left: targetLeft,
+          behavior: 'smooth'
+        });
+        
+        // Reset the programmatic scroll flag after the transition finishes (600ms)
+        const timer = setTimeout(() => {
+          isProgrammaticScroll.current = false;
+        }, 600);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [scrollIndex]);
+
+  // Auto-scroll loop effect (every 3 seconds, pauses on hover)
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      handleScrollRight();
+    }, 3000); // 3 seconds per project
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scrollIndex, isHovered, maxIndex]);
+
+  // Sync scrollIndex when user manually scrolls (swiping / dragging)
+  const handleScroll = () => {
+    if (isProgrammaticScroll.current) return;
     if (carouselRef.current) {
-      const cardWidth = carouselRef.current.offsetWidth / cardsPerView;
-      carouselRef.current.scrollTo({
-        left: newIndex * cardWidth * cardsPerView,
-        behavior: 'smooth'
+      const scrollLeft = carouselRef.current.scrollLeft;
+      const children = Array.from(carouselRef.current.children);
+      
+      let closestIndex = 0;
+      let minDistance = Infinity;
+      
+      children.forEach((child, index) => {
+        const distance = Math.abs(child.offsetLeft - scrollLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
       });
+      
+      if (closestIndex !== scrollIndex && closestIndex >= 0 && closestIndex <= maxIndex) {
+        setScrollIndex(closestIndex);
+      }
     }
   };
 
   return (
     <section id="projects" className="projects-section">
       <h2 className="projects-heading">Projects</h2>
-      <div className="horizontal-carousel-wrapper">
+      <div 
+        className="horizontal-carousel-wrapper"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <button
           className="horizontal-scroll-btn-left"
           onClick={handleScrollLeft}
-          disabled={scrollIndex === 0}
           aria-label="Scroll Left"
         >
           <FiChevronLeft size={32} />
         </button>
-        <div className="horizontal-carousel" ref={carouselRef}>
+        <div 
+          className="horizontal-carousel" 
+          ref={carouselRef}
+          onScroll={handleScroll}
+        >
           {projects.map((proj, i) => (
             <motion.div
               key={proj.title}
@@ -184,7 +238,6 @@ function Projects() {
         <button
           className="horizontal-scroll-btn"
           onClick={handleScrollRight}
-          disabled={scrollIndex === maxIndex}
           aria-label="Scroll Right"
         >
           <FiChevronRight size={32} />

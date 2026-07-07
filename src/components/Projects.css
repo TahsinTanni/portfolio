@@ -106,8 +106,8 @@
 
 /* Banner area styled as wide visual block on the left */
 .project-img-wrap {
-  width: 240px !important;
-  height: 160px !important;
+  width: 280px !important;
+  height: 200px !important;
   flex-shrink: 0 !important;
   display: flex !important;
   justify-content: center !important;
@@ -168,16 +168,18 @@
   opacity: 0.8 !important;
 }
 
-/* Show raw source image if available */
+/* Show raw source image if available — use contain so full image is always visible */
 .project-img {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
   z-index: 4 !important;
+  padding: 4px !important;
+  box-sizing: border-box !important;
 }
 
 /* Sequential dark background colors for project banners */
@@ -379,7 +381,7 @@
   
   .project-img-wrap {
     width: 100% !important;
-    height: 120px !important;
+    height: 180px !important;
   }
 
   .see-more-card {
