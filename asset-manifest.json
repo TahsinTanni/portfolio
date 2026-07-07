@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c463a1c4.css",
-    "main.js": "/static/js/main.7560639e.js",
+    "main.css": "/static/css/main.f3d73c21.css",
+    "main.js": "/static/js/main.00a72202.js",
     "static/js/453.ad7768ec.chunk.js": "/static/js/453.ad7768ec.chunk.js",
     "static/media/profmail.png": "/static/media/profmail.c5b58052300dc52820a1.png",
     "static/media/vae-clustering.jpg": "/static/media/vae-clustering.5a2000fe9696ae262275.jpg",
@@ -10,15 +10,17 @@
     "static/media/property-tracker.jpg": "/static/media/property-tracker.9685ea6de5a5f4fe2185.jpg",
     "static/media/thesis-flow.png": "/static/media/thesis-flow.448920cb4c5f42070fb5.png",
     "static/media/collab-playlist.png": "/static/media/collab-playlist.ca18c39af23d0b09239a.png",
+    "static/media/Tahsin_Tanni_CV_Academic.pdf": "/static/media/Tahsin_Tanni_CV_Academic.5c21a9e855907de9f169.pdf",
     "static/media/ai-professor-finder.png": "/static/media/ai-professor-finder.d9dc0647d1d532aca7e0.png",
-    "static/media/Tahsin_Tajwar_Tanni_CV.pdf": "/static/media/Tahsin_Tajwar_Tanni_CV.9dcb0648e9b82f224f85.pdf",
+    "static/media/Tahsin_Tanni_CV_Professional.pdf": "/static/media/Tahsin_Tanni_CV_Professional.8b55afa8107834b6f6df.pdf",
+    "static/media/rag-slackbot.jpg": "/static/media/rag-slackbot.e9d1b07229e387857a47.jpg",
     "index.html": "/index.html",
-    "main.c463a1c4.css.map": "/static/css/main.c463a1c4.css.map",
-    "main.7560639e.js.map": "/static/js/main.7560639e.js.map",
+    "main.f3d73c21.css.map": "/static/css/main.f3d73c21.css.map",
+    "main.00a72202.js.map": "/static/js/main.00a72202.js.map",
     "453.ad7768ec.chunk.js.map": "/static/js/453.ad7768ec.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c463a1c4.css",
-    "static/js/main.7560639e.js"
+    "static/css/main.f3d73c21.css",
+    "static/js/main.00a72202.js"
   ]
 }
