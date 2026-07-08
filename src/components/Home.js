@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Home.css';
-import cvProfessional from '../assets/Tahsin_Tanni_CV_Professional.pdf';
-import cvAcademic from '../assets/Tahsin_Tanni_CV_Academic.pdf';
-const tagline = "AI Automation Trainee • ML Researcher • Full-Stack Developer";
+import cvProfessional from '../assets/TahsinTajwarTanni_CV.pdf';
+import cvAcademic from '../assets/Tahsin_Tajwar_Tanni_CV.pdf';
+import VariableProximity from './VariableProximity';
+
+const tagline = "AI & Automation Engineer • ML Researcher • Full-Stack Developer";
 
 function Typing({ text }) {
   const [typed, setTyped] = useState('');
@@ -28,6 +30,7 @@ function handleScrollToProjects() {
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const heroRef = useRef(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -52,10 +55,23 @@ function Home() {
   };
 
   return (
-    <section className="hero-bg fade-in">
+    <section className="hero-bg fade-in" ref={heroRef}>
       <div className="hero-content">
         <div className="hero-text">
-          <h1 className="hero-title">Hi, I'm Tahsin Tanni</h1>
+          <h1 className="hero-title">
+            <span className="hero-greeting">Hi, I'm </span>
+            <span className="hero-name-wrapper">
+              <VariableProximity
+                label="Tahsin Tanni"
+                fromFontVariationSettings="'wght' 400, 'wdth' 100"
+                toFontVariationSettings="'wght' 900, 'wdth' 125"
+                containerRef={heroRef}
+                radius={150}
+                falloff="gaussian"
+                className="hero-name-variable"
+              />
+            </span>
+          </h1>
           <p className="typing"><Typing text={tagline} /></p>
           <div className="hero-btns">
             <button
@@ -79,7 +95,7 @@ function Home() {
                 <ul className="cv-dropdown-menu">
                   <li>
                     <button
-                      onClick={() => handleDownload(cvProfessional, 'Tahsin_Tanni_CV_Professional.pdf')}
+                      onClick={() => handleDownload(cvProfessional, 'TahsinTajwarTanni_CV.pdf')}
                       aria-label="Download Professional CV"
                     >
                       Professional CV
@@ -87,7 +103,7 @@ function Home() {
                   </li>
                   <li>
                     <button
-                      onClick={() => handleDownload(cvAcademic, 'Tahsin_Tanni_CV_Academic.pdf')}
+                      onClick={() => handleDownload(cvAcademic, 'Tahsin_Tajwar_Tanni_CV.pdf')}
                       aria-label="Download Academic CV"
                     >
                       Academic CV

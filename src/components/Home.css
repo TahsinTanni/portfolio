@@ -22,9 +22,31 @@
 }
 
 .hero-title {
-  font-size: 48px !important;
   margin: 0 0 12px 0 !important;
   line-height: 1.2 !important;
+  color: var(--text) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+}
+
+.hero-greeting {
+  font-size: 28px !important;
+  font-weight: 400 !important;
+  color: var(--sub) !important;
+  display: block !important;
+}
+
+.hero-name-wrapper {
+  display: block !important;
+}
+
+.hero-name-variable {
+  font-size: 90px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  letter-spacing: -3px !important;
   color: var(--text) !important;
 }
 
@@ -206,7 +228,14 @@
     text-align: center !important;
   }
   .hero-title {
-    font-size: 36px !important;
+    align-items: center !important;
+  }
+  .hero-greeting {
+    font-size: 20px !important;
+  }
+  .hero-name-variable {
+    font-size: 58px !important;
+    letter-spacing: -1px !important;
   }
   .hero-illustration {
     justify-content: center !important;

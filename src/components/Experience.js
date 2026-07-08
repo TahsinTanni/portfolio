@@ -4,9 +4,9 @@ import './Experience.css';
 
 const experiences = [
   {
-    role: "AI Automation Trainee",
+    role: "AI & Automation Engineer",
     company: "180 RE, Toronto, Canada",
-    duration: "May 2025 – Present",
+    duration: "May 2026 – Present",
     description: "• Built LLM-powered workflows using OpenAI and Anthropic APIs, automating multi-step business processes via n8n and third-party service integrations.\n• Developed and deployed AI-powered chatbots, integrating them into websites to automate user interactions and support.\n• Applied prompt engineering techniques to optimise LLM outputs for accuracy and safety across use cases.",
   },
   {

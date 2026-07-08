@@ -8,6 +8,7 @@ import Experience from './components/Experience';
 import Achievements from './components/Achievements';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import DotField from './components/DotField';
 import './index.css';
 
 function getInitialTheme() {
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <>
+      <DotField theme={theme} />
       <Navbar theme={theme} setTheme={setTheme} scrollToSection={scrollToSection} />
       <div className="main-content">
         <section id="home"><Home theme={theme} /></section>
