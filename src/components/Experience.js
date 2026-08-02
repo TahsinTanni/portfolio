@@ -18,7 +18,7 @@ const experiences = [
   {
     role: "Junior Web Developer (Part-time)",
     company: "Weabers",
-    duration: "February 2023 – July 2024",
+    duration: "February 2023 – July 2023",
     description: "Developed and maintained responsive web applications, built reusable UI components, integrated APIs with backend systems, and supported debugging and feature deployment.",
   },
   {
